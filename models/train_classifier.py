@@ -220,8 +220,7 @@ def evaluate_model(model, X_test, Y_test,category_names):
         X_test : input from test subset. 
         Y_test : output from test subset.
         category_names : category names.
-        tfidf : the TFIDF vectorizer that will be used to transform X_test.
-
+    
     Output
     ----------- 
         "metrics.csv"(file) : a csv file containing model metrics.
@@ -260,7 +259,7 @@ def main():
         1. Load data from SQLite database
         2. Train our model on training set.
         3. Evaluate our model on test set.
-        4. Save model and TFIDF Vectorizer as Pickle.
+        4. Save model as Pickle.
     
     """
     if len(sys.argv) == 3:
