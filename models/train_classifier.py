@@ -18,6 +18,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report,accuracy_score, roc_auc_score
+from sklearn.metrics import make_scorer,f1_score
 from sklearn.multioutput import MultiOutputClassifier
 import pickle
 
@@ -204,7 +205,10 @@ def build_model():
 
     # 3.GridSearchCV
     print(f"Start GridSearchCV ... {datetime.datetime.now()}")
-    model = GridSearchCV(estimator = pipeline, param_grid = parameters,cv=2,verbose=10)
+
+    scoring = make_scorer(f1_score,average='micro')
+    model = GridSearchCV(estimator = pipeline, param_grid = parameters,cv=2,verbose=10,
+                         scoring=scoring)
 
     return model
 
