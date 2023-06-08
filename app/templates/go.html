@@ -9,7 +9,20 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-center">RESULT</h1>
+{% if query!="" %}
+<!-- Add Badge with number of detected categories -->
+<h1 class="text-center">RESULT
+    <span style="font-size: small;background-color: gold;
+    margin-bottom: 1.5em;top: -1em;
+    padding-left: 0.5em;padding-right: 0.5em;
+    position: relative; display:inline-block">
+        {{classification_result.values()|sum}}
+    </span>
+</h1>
+{% else %}
+<h1 class="text-center">RESULT </h1>
+{% endif %}
+
 <ul class="list-group">
     {% for category, classification in classification_result.items() %}
 
