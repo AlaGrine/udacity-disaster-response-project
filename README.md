@@ -1,8 +1,10 @@
 # Disaster Response Pipeline Project
 
-The Flask app is deployed to [Heroku](https://dashboard.heroku.com/).
+A WEB app deployed to [Heroku](https://dashboard.heroku.com/) and accessible at the following URL:
 
-### https://udacity-disasterapp.herokuapp.com
+<div align="center">
+  <h3>https://udacity-disasterapp.herokuapp.com</h3>
+</div>
 
 ### Table of Contents
 
