@@ -50,7 +50,7 @@ def load_data(database_filepath):
     X = df['message']
 
     # Y: the 36 categories which we need to predict.
-    Y = df[df.columns[4:]] # for caterories start from column 4.
+    Y = df.iloc[:,4:] # for caterories start from column 4.
 
     # category_names
     category_names = Y.columns
@@ -208,7 +208,10 @@ def build_model():
 
     scoring = make_scorer(f1_score,average='micro')
     model = GridSearchCV(estimator = pipeline, param_grid = parameters,cv=2,verbose=10,
-                         scoring=scoring)
+                         scoring=scoring)   
+
+    # Note: To fix Error "multicalss-multioutput is not supported"
+    # we need to replace values with label 2 for category related (see data/process_data.py)
 
     return model
 
