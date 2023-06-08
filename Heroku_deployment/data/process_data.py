@@ -66,6 +66,11 @@ def clean_data(df):
     # 8. Drop duplicates
     df = df.drop_duplicates()
 
+    # 9. The are some values with label 2 for category related.
+    # We will replace them by 1
+    # To avoid Error: multicalss-multioutput is not supported!
+    df.related.replace(2,1,inplace=True)
+
     return df
 
 
@@ -82,8 +87,6 @@ def save_data(df, database_filename):
 
     # Create table `Disaster`. Replace it if exists (default='fail')
     df.to_sql("Disaster", engine, if_exists='replace', index=False)  
-
-    df.to_csv("data/disaster_clean.csv",index=False)
 
 
 def main():

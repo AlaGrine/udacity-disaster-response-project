@@ -58,7 +58,7 @@ This project requires Python 3 and the following Python libraries installed:
   - `disaster_categories.csv` and `disaster_messages.csv`: real-world datasets provided by [Appen](https://appen.com/).
 - **Notebooks** folder: contains the project's notebooks.
 
-- **Heroku_deployment folder** folder: uded to [deploy](#deployment_heroku) the app to `Heroku`.
+- **Heroku_deployment** folder: used to [deploy](#deployment_heroku) the app to `Heroku`.
 
 ## Instructions <a name="instructions"></a>
 

@@ -1,6 +1,3 @@
-import warnings
-warnings.simplefilter("ignore", UserWarning)
-
 import sys
 import pandas as pd 
 import numpy as np
@@ -22,13 +19,13 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report,accuracy_score, roc_auc_score
 from sklearn.metrics import make_scorer,f1_score
-
 from sklearn.multioutput import MultiOutputClassifier
 import pickle
 
 import datetime
 
-from tokenizer import tokenize
+import warnings
+warnings.simplefilter("ignore", UserWarning)
 
 def load_data(database_filepath):
     """
@@ -53,7 +50,7 @@ def load_data(database_filepath):
     X = df['message']
 
     # Y: the 36 categories which we need to predict.
-    Y = df[df.columns[4:]] # for caterories start from column 4.
+    Y = df.iloc[:,4:] # for caterories start from column 4.
 
     # category_names
     category_names = Y.columns
@@ -61,48 +58,48 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 
-# def tokenize(text):
-#     """
-#     Tokenize and preprocess text:
-#         1. find urls and replace them with 'urlplaceholder'.
-#         2. Normalization of the text : Convert to lowercase.
-#         3. Normalization of the text : Remove punctuation characters.
-#         4. Split text into words using NLTK.
-#         5. remove stop words.
-#         6. Lemmatization.    
+def tokenize(text):
+    """
+    Tokenize and preprocess text:
+        1. find urls and replace them with 'urlplaceholder'.
+        2. Normalization of the text : Convert to lowercase.
+        3. Normalization of the text : Remove punctuation characters.
+        4. Split text into words using NLTK.
+        5. remove stop words.
+        6. Lemmatization.    
 
-#     Parameters
-#     -----------
-#         text: text
+    Parameters
+    -----------
+        text: text
 
-#     Returns
-#     -----------
-#         clean_tokens
-#     """
-#     # 1. find urls and replace them with 'urlplaceholder'
-#     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-#     text = re.sub(url_regex, 'urlplaceholder', text)
+    Returns
+    -----------
+        clean_tokens
+    """
+    # 1. find urls and replace them with 'urlplaceholder'
+    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    text = re.sub(url_regex, 'urlplaceholder', text)
 
-#     # 2. Convert to lowercase
-#     text = text.lower().strip() 
+    # 2. Convert to lowercase
+    text = text.lower().strip() 
     
-#     # 3. Remove punctuation characters
-#     text = re.sub(r"[^a-zA-Z0-9]", " ", text) 
+    # 3. Remove punctuation characters
+    text = re.sub(r"[^a-zA-Z0-9]", " ", text) 
     
-#     # 4. Split text into words using NLTK
-#     words = word_tokenize(text)
+    # 4. Split text into words using NLTK
+    words = word_tokenize(text)
     
-#     # 5. Remove stop words
-#     words = [w for w in words if w not in stopwords.words("english")]
+    # 5. Remove stop words
+    words = [w for w in words if w not in stopwords.words("english")]
     
-#     # 6. Lemmatization
-#     lemmatizer = WordNetLemmatizer()
-#     # 6.1 Reduce words to their root form
-#     lemmed = [lemmatizer.lemmatize(w) for w in words]
-#     # 6.2 Lemmatize verbs by specifying pos
-#     clean_tokens = [WordNetLemmatizer().lemmatize(w, pos='v') for w in lemmed]
+    # 6. Lemmatization
+    lemmatizer = WordNetLemmatizer()
+    # 6.1 Reduce words to their root form
+    lemmed = [lemmatizer.lemmatize(w) for w in words]
+    # 6.2 Lemmatize verbs by specifying pos
+    clean_tokens = [WordNetLemmatizer().lemmatize(w, pos='v') for w in lemmed]
     
-#     return clean_tokens
+    return clean_tokens
 
 def print_classification_report(Y_test, Y_pred,category_names):
     """
@@ -208,9 +205,13 @@ def build_model():
 
     # 3.GridSearchCV
     print(f"Start GridSearchCV ... {datetime.datetime.now()}")
+
     scoring = make_scorer(f1_score,average='micro')
     model = GridSearchCV(estimator = pipeline, param_grid = parameters,cv=2,verbose=10,
-                         scoring=scoring)
+                         scoring=scoring)   
+
+    # Note: To fix Error "multicalss-multioutput is not supported"
+    # we need to replace values with label 2 for category related (see data/process_data.py)
 
     return model
 
