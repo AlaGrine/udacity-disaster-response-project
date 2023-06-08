@@ -47,17 +47,19 @@
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/dashboard">
-                <span data-feather="bar-chart-2"></span>
-                Dashboard
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link active" href="/classifier">
                 <span data-feather="message-circle"></span>
                 Message analyser
               </a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/dashboard">
+                <span data-feather="bar-chart-2"></span>
+                Dashboard
+              </a>
+            </li>
+
             <li class="nav-item">
               <a class="nav-link" href="/model-eval">
                 <span data-feather="bar-chart"></span>
@@ -124,14 +126,22 @@
       </div>
 
       <div class="container">
-        <!-- Show block message classification table -->
         {% block content %}
+        <div class="page-header">
+          <h1 class="text-center">Overview of Training Dataset</h1>
+        </div>
         {% endblock %}
+        <br>
+        <hr />
+        <br>
+
+        {% for id in ids %}
+        <div id="{{id}}"></div>
+        {% endfor %}
+
+
       </div>
     </main>
-
-
-  </div>
   </div>
 
   <!-- Scripts -->
@@ -142,6 +152,19 @@
     crossorigin="anonymous"></script>
 
   <script src="../static/dashboard.js"></script>
+
+  <script type="text/javascript">
+    // plots the figure with id
+    // id must match the div id above in the html
+    var figures = {{ graphJSON | safe}};
+    var ids = {{ ids | safe}};
+    for (var i in figures) {
+      Plotly.plot(ids[i],
+        figures[i].data,
+        figures[i].layout || {});
+    }
+  </script>
+
 
 </body>
 
