@@ -70,7 +70,7 @@ This project requires Python 3 and the following Python libraries installed:
 
      `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
 
-   - To run ML pipeline that trains classifier and saves
+   - To run ML pipeline that trains classifier and saves to pkl
 
      `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
 
@@ -82,13 +82,13 @@ This project requires Python 3 and the following Python libraries installed:
 
 ## Screenshots <a name="screen_shots"></a>
 
-1. THe `Dashboard` page shows the distribution of message genres, categories and lengths. A Wordcloud of the most common words is also displayed.
-
-   ![image Dashboard](https://github.com/AlaGrine/udacity-disaster-response-project/blob/main/screenshots/Dashboard.png)
-
-2. The `Message Analyser` page displays the categories into which the message has been classified, highlighted in blue.
+1. The `Message Analyser` page displays the categories into which the message has been classified, highlighted in blue.
 
    ![image Classifier](https://github.com/AlaGrine/udacity-disaster-response-project/blob/main/screenshots/Classifier.png)
+
+2. THe `Dashboard` page shows the distribution of message genres, categories and lengths. A Wordcloud of the most common words is also displayed.
+
+   ![image Dashboard](https://github.com/AlaGrine/udacity-disaster-response-project/blob/main/screenshots/Dashboard.png)
 
 3. The `Model metrics` page displays F1-score and recall metrics of our model.
 
@@ -104,16 +104,18 @@ Using `Random Forest` classifier as model, we can observe:
 
 - For **10** categories, the proportion of samples in the positive class is less than **2%**, and for **20** categories, the ratio is less than **5%** .
   These categories have very low f1 scores and recall.
-- Precision is around 0.7 for the vast majority of categories.
+- The precision is around 0.7 for 29 categories and zero for 7 categories.
 - The F1-score tends to increase as the proportion of samples in the positive class increases.
 
 ![image imbalance_f1score](https://github.com/AlaGrine/udacity-disaster-response-project/blob/main/screenshots/Inbalance.png)
 
-`` Therefore `F1-score` scoring method is more appropriate for GridSearchCV than `accuracy`. ``
+```
+F1-score scoring method is more appropriate for GridSearchCV than accuracy.
+```
 
 ### Imbalance between categories:
 
-There is also an imbalance between the 36 categories: While the Related and Air_related categories have more than 15K messages, other categories such as Fire or Offers have less than 300 messages.
+There is also an imbalance between the 36 categories. While the Related and Air_related categories have more than 15,000 messages, other categories such as Fire or Offers have less than 300 messages.
 
 To deal with this imbalanced dataset, we tried to upsample the minority labels using the [MLSMOTE](https://www.kaggle.com/code/tolgadincer/upsampling-multilabel-data-with-mlsmote) implementation. This implementation can be found on the notebook.
 
