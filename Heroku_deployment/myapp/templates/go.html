@@ -1,0 +1,30 @@
+{% extends "classifier.html" %}
+{% block title %}Results{% endblock %}
+{% block message %}
+<hr />
+{% if query!="" %}
+<h1 class="text-center">MESSAGE</h1>
+<p class="text-center"><i>{{query}}</i></p>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">RESULT</h1>
+<ul class="list-group">
+    {% for category, classification in classification_result.items() %}
+
+    {% if category == "null" %}
+    <li class="list-group-item list-group-item-danger text-center">
+        {{category.replace('_', ' ').title()}}</li>
+    {% else %}
+    {% if classification == 1 %}
+    <li class="list-group-item text-center" style="background-color: rgb(158,202,225);">
+        {{category.replace('_', ' ').title()}}</li>
+    {% else %}
+    <li class="list-group-item text-center">{{category.replace('_', ' ').title()}}</li>
+    {% endif %}
+
+    {% endif %}
+    {% endfor %}
+
+    {% endblock %}
